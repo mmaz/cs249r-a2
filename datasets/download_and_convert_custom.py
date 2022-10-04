@@ -110,13 +110,13 @@ def _convert_dataset(split_name, filenames, class_names_to_ids, dataset_dir):
   """Converts the given filenames to a TFRecord dataset.
 
   Args:
-    split_name: The name of the dataset, either 'train' or 'validation'.
+    split_name: The name of the dataset, either 'train' or 'val'.
     filenames: A list of absolute paths to png or jpg images.
     class_names_to_ids: A dictionary from class names (strings) to ids
       (integers).
     dataset_dir: The directory where the converted datasets are stored.
   """
-  assert split_name in ['train', 'validation']
+  assert split_name in ['train', 'val']
 
   num_per_shard = int(math.ceil(len(filenames) / float(_NUM_SHARDS)))
 
@@ -155,7 +155,7 @@ def _convert_dataset(split_name, filenames, class_names_to_ids, dataset_dir):
 
 
 def _dataset_exists(dataset_dir):
-  for split_name in ['train', 'validation']:
+  for split_name in ['train', 'val']:
     for shard_id in range(_NUM_SHARDS):
       output_filename = _get_dataset_filename(
           dataset_dir, split_name, shard_id)
@@ -192,7 +192,7 @@ def run(dataset_dir):
   # First, convert the training and validation sets.
   _convert_dataset('train', training_filenames, class_names_to_ids,
                    dataset_dir)
-  _convert_dataset('validation', validation_filenames, class_names_to_ids,
+  _convert_dataset('val', validation_filenames, class_names_to_ids,
                    dataset_dir)
 
   # Finally, write the labels file:
